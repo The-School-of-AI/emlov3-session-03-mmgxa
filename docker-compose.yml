@@ -1,34 +1,29 @@
 version: '3.8'
+
 services:
   train:
-    # Build the training service
-    # ...
-
-    # Mount volumes
-    # ...
-
-    # Run the training command
-    # command: python train.py add cli args here as to where the model is supposed to be stored
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    volumes:
+      - mnist:/opt/mount/
+    restart: on-failure
 
   evaluate:
-    # Build the evaluation service
-    # ...
-
-    # Mount volumes
-    # volumes:
-    #   - ./data:/workspace/data
-    # also mount the mnist volume
-    # ...
-
-    # Run the evaluation command
-    # command: python eval.py maybe add command line argument here, like where the model is located
+    build:
+      context: .
+      dockerfile: Dockerfile.eval
+    volumes:
+      - mnist:/opt/mount/
+    restart: on-failure
 
   infer:
-    # Build the inference service
-    # ...
+    build:
+      context: .
+      dockerfile: Dockerfile.infer
+    volumes:
+      - mnist:/opt/mount/
+    restart: on-failure
 
-    # Mount volumes
-    # ...
-
-    # Run the inference command
-    # command: python infer.py
+volumes:
+    mnist:
