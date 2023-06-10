@@ -1,0 +1,16 @@
+FROM python:3.8.13-slim-bullseye
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN pip install \
+  torch==1.12.0+cpu \
+  torchvision==0.13.0+cpu \
+  --extra-index-url https://download.pytorch.org/whl/cpu \
+  && rm -rf /root/.cache/pip
+
+WORKDIR /opt/
+
+COPY ["train.py", "model_file.py", "./"]
+
+CMD ["python", "train.py"]
